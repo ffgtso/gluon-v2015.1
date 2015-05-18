@@ -1,7 +1,8 @@
 #!/bin/sh /etc/rc.common
 
-SETUP_MODE_ADDR=192.168.1.1
+SETUP_MODE_ADDR=203.0.113.1
 SETUP_MODE_NETMASK=255.255.255.0
+#SETUP_MODE_DHCP_RANGE=203.0.113.2,203.0.113.254
 
 START=20
 STOP=90
@@ -28,9 +29,37 @@ prepare_config() {
 	uci_set network setup ifname "$(lua -e 'print(require("gluon.sysconfig").setup_ifname)')"
 	uci_set network setup macaddr "$(lua -e 'print(require("gluon.sysconfig").primary_mac)')"
 	uci_set network setup type 'bridge'
-	uci_set network setup proto 'static'
-	uci_set network setup ipaddr "$SETUP_MODE_ADDR"
-	uci_set network setup netmask "$SETUP_MODE_NETMASK"
+	uci_set network setup proto 'dhcp'
+#	uci_set network setup ipaddr "$SETUP_MODE_ADDR"
+#	uci_set network setup netmask "$SETUP_MODE_NETMASK"
+
+	lan_if="$(lua -e 'print(require("gluon.sysconfig").lan_ifname)')"
+	wan_if="$(lua -e 'print(require("gluon.sysconfig").wan_ifname)')"
+	setup_if="$(lua -e 'print(require("gluon.sysconfig").setup_ifname)')"
+
+	single_only=0
+	if [ "${lan_if}" = "${wan_if}" -o "${lan_if}" = "nil" -o "${wan_if}" = "nil" ]; then
+		single_only=1
+	else
+		if [ "${setup_if}" = "${lan_if}" ]; then
+			fallback_if="${wan_if}"
+		else
+			fallback_if="${lan_if}"
+		fi
+
+		uci_add network interface fallback
+		uci_set network fallback ifname "${fallback_if}"
+		uci_set network fallback proto 'static'
+		uci_set network fallback ipaddr "$SETUP_MODE_ADDR"
+		uci_set network fallback netmask "$SETUP_MODE_NETMASK"
+
+		FALLBACK_IP=169.254.1.42
+		uci_add network interface APIPA
+		uci_set network APIPA ifname "${fallback_if}"
+		uci_set network APIPA proto 'static'
+		uci_set network APIPA ipaddr "${FALLBACK_IP}"
+		uci_set network APIPA netmask "255.255.0.0"
+	fi
 
 	uci_commit network
 )
