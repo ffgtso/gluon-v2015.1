@@ -43,6 +43,17 @@ end
 
 function action_reboot()
   local uci = luci.model.uci.cursor()
+  local sysconfig = require 'gluon.sysconfig'
+  local lat = uci:get_first("gluon-node-info", "location", "latitude")
+  local lon = uci:get_first("gluon-node-info", "location", "longitude")
+  local pubkey = uci:get_first('fastd', 'mesh_vpn', 'secret')
+
+  if lat and lon then
+     location = lat .. "%20" .. lon
+  else
+     location = ""
+  end
+
 
   uci:set("gluon-setup-mode", uci:get_first("gluon-setup-mode", "setup_mode"), "configured", "1")
   uci:save("gluon-setup-mode")
@@ -71,6 +82,9 @@ function action_reboot()
 
     luci.template.render("gluon/config-mode/reboot", { parts=parts
                                                      , hostname=hostname
+                                                     , sysconfig=sysconfig
+                                                     , location=location
+                                                     , pubkey=pubkey
                                                      })
   else
     debug.setfenv(io.stdout, debug.getfenv(io.open '/dev/null'))
