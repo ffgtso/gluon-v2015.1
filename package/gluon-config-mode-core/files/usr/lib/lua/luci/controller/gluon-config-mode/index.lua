@@ -18,34 +18,34 @@ function index()
   if uci_state:get_first("gluon-setup-mode", "setup_mode", "running", "0") == "1" then
     local root = node()
     if not root.target then
-      root.target = alias("gluon-config-mode")
+      root.target = alias("gluon-config-mode/geoloc")
       root.index = true
     end
 
-    page          = node()
-    page.lock     = true
-    page.target   = alias("gluon-config-mode")
-    page.subindex = true
-    page.index    = false
+    --page          = node()
+    --page.lock     = true
+    --page.target   = alias("gluon-config-mode", "geoloc")
+    --page.subindex = true
+    --page.index    = false
 
-    page          = node("gluon-config-mode")
-    page.title    = _("GeoLocation")
-    page.target   = alias("gluon-config-mode", "wizard")
-    page.order    = 5
-    page.setuser  = "root"
-    page.setgroup = "root"
-    page.index    = true
+    --page          = node("gluon-config-mode/geoloc")
+    --page.title    = _("GeoLocation")
+    --page.target   = alias("gluon-config-mode", "geoloc")
+    --page.order    = 5
+    --page.setuser  = "root"
+    --page.setgroup = "root"
+    --page.index    = true
 
-    page          = node("gluon-config-mode")
-    page.title    = _("Wizard II")
-    page.target   = alias("gluon-config-mode", "wizard2")
-    page.order    = 4
-    page.setuser  = "root"
-    page.setgroup = "root"
-    page.index    = false
+    --page          = node("gluon-config-mode/wizard")
+    --page.title    = _("Wizard")
+    --page.target   = alias("gluon-config-mode", "wizard2")
+    --page.order    = 4
+    --page.setuser  = "root"
+    --page.setgroup = "root"
+    --page.index    = false
 
-    entry({"gluon-config-mode", "wizard"}, form("gluon-config-mode/wizard")).index = true
-    entry({"gluon-config-mode", "wizard2"}, form("gluon-config-mode/wizard2"))
+    entry({"gluon-config-mode", "geoloc"}, form("gluon-config-mode/geoloc")).index = true
+    entry({"gluon-config-mode", "wizard"}, form("gluon-config-mode/wizard")).index = false
     entry({"gluon-config-mode", "reboot"}, call("action_reboot"))
   end
 end
