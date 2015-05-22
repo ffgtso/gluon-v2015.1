@@ -18,51 +18,31 @@ function index()
   if uci_state:get_first("gluon-setup-mode", "setup_mode", "running", "0") == "1" then
     local root = node()
     if not root.target then
-      root.target = alias("gluon-config-mode/geoloc")
+      root.target = alias("gluon-config-mode")
       root.index = true
     end
 
-    --page          = node()
-    --page.lock     = true
-    --page.target   = alias("gluon-config-mode", "geoloc")
-    --page.subindex = true
-    --page.index    = false
+    page          = node()
+    page.lock     = true
+    page.target   = alias("gluon-config-mode")
+    page.subindex = true
+    page.index    = false
 
-    --page          = node("gluon-config-mode/geoloc")
-    --page.title    = _("GeoLocation")
-    --page.target   = alias("gluon-config-mode", "geoloc")
-    --page.order    = 5
-    --page.setuser  = "root"
-    --page.setgroup = "root"
-    --page.index    = true
+    page          = node("gluon-config-mode")
+    page.title    = _("Wizard")
+    page.target   = alias("gluon-config-mode", "wizard")
+    page.order    = 5
+    page.setuser  = "root"
+    page.setgroup = "root"
+    page.index    = true
 
-    --page          = node("gluon-config-mode/wizard")
-    --page.title    = _("Wizard")
-    --page.target   = alias("gluon-config-mode", "wizard2")
-    --page.order    = 4
-    --page.setuser  = "root"
-    --page.setgroup = "root"
-    --page.index    = false
-
-    entry({"gluon-config-mode", "geoloc"}, form("gluon-config-mode/geoloc")).index = true
-    entry({"gluon-config-mode", "wizard"}, form("gluon-config-mode/wizard")).index = false
+    entry({"gluon-config-mode", "wizard"}, form("gluon-config-mode/wizard")).index = true
     entry({"gluon-config-mode", "reboot"}, call("action_reboot"))
   end
 end
 
 function action_reboot()
   local uci = luci.model.uci.cursor()
-  local sysconfig = require 'gluon.sysconfig'
-  local lat = uci:get_first("gluon-node-info", "location", "latitude")
-  local lon = uci:get_first("gluon-node-info", "location", "longitude")
-  local pubkey = uci:get_first('fastd', 'mesh_vpn', 'secret')
-
-  if lat and lon then
-     location = lat .. "%20" .. lon
-  else
-     location = ""
-  end
-
 
   uci:set("gluon-setup-mode", uci:get_first("gluon-setup-mode", "setup_mode"), "configured", "1")
   uci:save("gluon-setup-mode")
@@ -91,9 +71,6 @@ function action_reboot()
 
     luci.template.render("gluon/config-mode/reboot", { parts=parts
                                                      , hostname=hostname
-                                                     , sysconfig=sysconfig
-                                                     , location=location
-                                                     , pubkey=pubkey
                                                      })
   else
     debug.setfenv(io.stdout, debug.getfenv(io.open '/dev/null'))
