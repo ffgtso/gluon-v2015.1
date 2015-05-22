@@ -29,15 +29,23 @@ function index()
     page.index    = false
 
     page          = node("gluon-config-mode")
+    page.title    = _("GeoLocation")
+    page.target   = alias("gluon-config-mode", "geoloc")
+    page.order    = 4
+    page.setuser  = "root"
+    page.setgroup = "root"
+    page.index    = true
+
+    page          = node("gluon-config-mode")
     page.title    = _("Wizard")
     page.target   = alias("gluon-config-mode", "wizard")
     page.order    = 5
     page.setuser  = "root"
     page.setgroup = "root"
-    page.index    = true
+    page.index    = false
 
     entry({"gluon-config-mode", "geoloc"}, form("gluon-config-mode/geoloc")).index = true
-    entry({"gluon-config-mode", "wizard"}, form("gluon-config-mode/wizard")).index = true
+    entry({"gluon-config-mode", "wizard"}, form("gluon-config-mode/wizard"))
     entry({"gluon-config-mode", "reboot"}, call("action_reboot"))
   end
 end
