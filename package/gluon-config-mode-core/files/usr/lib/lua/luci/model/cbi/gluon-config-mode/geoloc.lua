@@ -11,13 +11,13 @@ table.sort(files)
 
 for _, entry in ipairs(files) do
   if entry:sub(1, 1) ~= '.' then
-    table.insert(wizard, dofile(wizard_dir .. '/' .. entry))
+    table.insert(geoloc, dofile(wizard_dir .. '/' .. entry))
   end
 end
 
 f = SimpleForm("geoloc")
 f.reset = false
-f.template = "gluon/cbi/config-mode"
+f.template = "gluon/cbi/geoloc"
 
 for _, s in ipairs(geoloc) do
   s.section(f)
