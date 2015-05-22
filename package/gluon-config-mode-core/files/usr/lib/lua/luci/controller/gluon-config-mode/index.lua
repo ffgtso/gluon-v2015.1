@@ -36,6 +36,7 @@ function index()
     page.setgroup = "root"
     page.index    = true
 
+    entry({"gluon-config-mode", "geoloc"}, form("gluon-config-mode/geoloc")).index = true
     entry({"gluon-config-mode", "wizard"}, form("gluon-config-mode/wizard")).index = true
     entry({"gluon-config-mode", "reboot"}, call("action_reboot"))
   end
