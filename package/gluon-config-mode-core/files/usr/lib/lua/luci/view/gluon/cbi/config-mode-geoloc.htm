@@ -1,11 +1,26 @@
+<style>
+  .cssbutton{
+    background-color: #009ee0;
+    border: 2px #0087bf outset;
+    padding: 0.5em 1.0em;
+    color: black;
+    text-decoration: none;
+    font: bold 100% 'Open Sans', Arial, sans-serif;;
+  }
+
+  .cssbutton:hover{
+    border-style: inset;
+    background-color: #37aee0;
+  }
+</style>
 <%-
 	local sysconfig = require 'gluon.sysconfig'
 	local i18n = require 'luci.i18n'
 	local template = require 'luci.template'
 -%>
 <div style="text-align: right">
-        <a class="cbi-button cbi-button-apply" href="<%=luci.dispatcher.build_url("gluon-config-mode/geolocate")%>"> Geolocate </a>
-        <a class="cbi-button cbi-button-apply" href="<%=luci.dispatcher.build_url("gluon-config-mode/wizard-pre")%>"> Reload </a>
+        <a class="cssbutton cbi-button cbi-button-apply" href="<%=luci.dispatcher.build_url("gluon-config-mode/geolocate")%>">&nbsp;Geolocate&nbsp;</a>
+        <a class="cssbutton cbi-button cbi-button-apply" href="<%=luci.dispatcher.build_url("gluon-config-mode/wizard-pre")%>">&nbsp;Reload&nbsp;</a>
 </div>
 
 <h2><%:Welcome!%></h2>
@@ -43,8 +58,6 @@
 		  end
 		end
 %>
-        <a class="cbi-button cbi-button-apply" href="<%=luci.dispatcher.build_url("gluon-config-mode/geolocate")%>"> Geolocate </a>
-        <a class="cbi-button cbi-button-apply" href="<%=luci.dispatcher.build_url("gluon-config-mode/wizard-pre")%>"> Reload </a>
  		<input class="cbi-button cbi-button-save" type="submit" value="<%:Weiter%>" />
 		<script type="text/javascript">cbi_d_update();</script>
 	</div>

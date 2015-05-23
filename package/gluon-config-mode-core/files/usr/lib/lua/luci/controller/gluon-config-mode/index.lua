@@ -9,6 +9,7 @@ You may obtain a copy of the License at
 
 $Id$
 ]]--
+local uci = luci.model.uci.cursor()
 
 module("luci.controller.gluon-config-mode.index", package.seeall)
 
@@ -38,6 +39,7 @@ function index()
 
     entry({"gluon-config-mode", "wizard-prepare"}, call("prepare"))
     entry({"gluon-config-mode", "wizard-pre"}, form("gluon-config-mode/wizard-pre")).index = true
+    entry({"gluon-config-mode", "wizard"}, form("gluon-config-mode/wizard"))
     entry({"gluon-config-mode", "geolocate"}, call("geolocate"))
     entry({"gluon-config-mode", "reboot"}, call("action_reboot"))
   end
@@ -79,18 +81,19 @@ function prepare()
       uci:commit("gluon-node-info")
     end
   end
+  luci.http.redirect(luci.dispatcher.build_url("gluon-config-mode/wizard-pre"))
 end
 
 function geolocate()
-    -- If there's no location set, try to get something via callback, as we need this for
-    -- selecting the proper settings.
-    local lat = uci:get_first("gluon-node-info", 'location', "latitude")
-    local lon = uci:get_first("gluon-node-info", 'location', "longitude")
-    if not lat or not lon then
-      os.execute('sh "/lib/gluon/ffgt-geolocate/senddata.sh"')
-      -- os.execute('sleep 20')
-    end
-    luci.http.redirect(luci.dispatcher.build_url("gluon-config-mode/wizard-pre"))
+  -- If there's no location set, try to get something via callback, as we need this for
+  -- selecting the proper settings.
+  local lat = uci:get_first("gluon-node-info", 'location', "latitude")
+  local lon = uci:get_first("gluon-node-info", 'location', "longitude")
+  if not lat or not lon then
+    os.execute('sh "/lib/gluon/ffgt-geolocate/senddata.sh"')
+    os.execute('sleep 2')
+  end
+  luci.http.redirect(luci.dispatcher.build_url("gluon-config-mode/wizard-pre"))
 end
 
 function action_reboot()
