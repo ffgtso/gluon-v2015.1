@@ -91,6 +91,7 @@ function prepare()
     -- else
     --   luci.http.redirect(luci.dispatcher.build_url("admin/freifunk/assistent/generalInfo"))
     -- end
+    end
 end
 
 function action_reboot()
