@@ -30,13 +30,13 @@ function index()
 
     page          = node("gluon-config-mode")
     page.title    = _("Wizard")
-    page.target   = alias("gluon-config-mode", "wizard")
+    page.target   = alias("gluon-config-mode", "wizard-pre")
     page.order    = 5
     page.setuser  = "root"
     page.setgroup = "root"
     page.index    = true
 
-    entry({"gluon-config-mode", "wizard"}, form("gluon-config-mode/wizard")).index = true
+    entry({"gluon-config-mode", "wizard-pre"}, form("gluon-config-mode/wizard-pre")).index = true
     entry({"gluon-config-mode", "reboot"}, call("action_reboot"))
   end
 end
