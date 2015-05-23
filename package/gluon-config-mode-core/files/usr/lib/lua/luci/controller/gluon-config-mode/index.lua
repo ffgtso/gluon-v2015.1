@@ -30,14 +30,15 @@ function index()
 
     page          = node("gluon-config-mode")
     page.title    = _("Wizard")
-    page.target   = alias("gluon-config-mode", "wizard-pre")
+    page.target   = alias("gluon-config-mode", "wizard-prepare")
     page.order    = 5
     page.setuser  = "root"
     page.setgroup = "root"
     page.index    = true
 
-    entry({"gluon-config-mode", "wizard-pre"}, call("prepare"))
+    entry({"gluon-config-mode", "wizard-prepare"}, call("prepare"))
     entry({"gluon-config-mode", "wizard-pre"}, form("gluon-config-mode/wizard-pre")).index = true
+    entry({"gluon-config-mode", "geolocate"}, call("geolocate"))
     entry({"gluon-config-mode", "reboot"}, call("action_reboot"))
   end
 end
@@ -77,21 +78,19 @@ function prepare()
       uci:save("gluon-node-info")
       uci:commit("gluon-node-info")
     end
+  end
+end
 
+function geolocate()
     -- If there's no location set, try to get something via callback, as we need this for
     -- selecting the proper settings.
-    -- local lat = uci:get_first("gluon-node-info", 'location', "latitude")
-    -- local lon = uci:get_first("gluon-node-info", 'location', "longitude")
-    -- if not lat or not lon then
-    --  os.execute('sh "/lib/gluon/ffgt-geolocate/senddata.sh"')
-    --  os.execute('sleep 20')
-    -- end
-    -- if not uci:get("ffwizard","settings","runbefore") then
-    --   luci.http.redirect(luci.dispatcher.build_url("admin/freifunk/assistent/changePassword"))
-    -- else
-    --   luci.http.redirect(luci.dispatcher.build_url("admin/freifunk/assistent/generalInfo"))
-    -- end
+    local lat = uci:get_first("gluon-node-info", 'location', "latitude")
+    local lon = uci:get_first("gluon-node-info", 'location', "longitude")
+    if not lat or not lon then
+      os.execute('sh "/lib/gluon/ffgt-geolocate/senddata.sh"')
+      -- os.execute('sleep 20')
     end
+    luci.http.redirect(luci.dispatcher.build_url("gluon-config-mode/wizard-pre"))
 end
 
 function action_reboot()

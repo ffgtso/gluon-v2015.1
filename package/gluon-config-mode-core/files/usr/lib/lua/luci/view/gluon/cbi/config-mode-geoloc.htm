@@ -3,6 +3,10 @@
 	local i18n = require 'luci.i18n'
 	local template = require 'luci.template'
 -%>
+<div style="text-align: right">
+        <a class="cbi-button cbi-button-apply" href="<%=luci.dispatcher.build_url("gluon-config-mode/geolocate")%>"> Geolocate </a>
+        <a class="cbi-button cbi-button-apply" href="<%=luci.dispatcher.build_url("gluon-config-mode/wizard-pre")%>"> Reload </a>
+</div>
 
 <h2><%:Welcome!%></h2>
 <p>
@@ -39,7 +43,9 @@
 		  end
 		end
 %>
-		<input class="cbi-button cbi-button-save" type="submit" value="<%:Weiter%>" />
+        <a class="cbi-button cbi-button-apply" href="<%=luci.dispatcher.build_url("gluon-config-mode/geolocate")%>"> Geolocate </a>
+        <a class="cbi-button cbi-button-apply" href="<%=luci.dispatcher.build_url("gluon-config-mode/wizard-pre")%>"> Reload </a>
+ 		<input class="cbi-button cbi-button-save" type="submit" value="<%:Weiter%>" />
 		<script type="text/javascript">cbi_d_update();</script>
 	</div>
 </form>
