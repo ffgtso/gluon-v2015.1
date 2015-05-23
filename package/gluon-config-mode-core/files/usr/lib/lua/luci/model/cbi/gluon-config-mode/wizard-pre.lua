@@ -17,7 +17,7 @@ end
 
 f = SimpleForm("geoloc")
 f.reset = false
-f.template = "gluon/cbi/config-mode"
+f.template = "gluon/cbi/config-mode-geoloc"
 
 for _, s in ipairs(geoloc) do
   s.section(f)
