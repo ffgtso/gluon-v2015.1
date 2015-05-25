@@ -87,12 +87,13 @@ end
 function geolocate()
   -- If there's no location set, try to get something via callback, as we need this for
   -- selecting the proper settings.
-  local lat = uci:get_first("gluon-node-info", 'location', "latitude")
-  local lon = uci:get_first("gluon-node-info", 'location', "longitude")
-  if not lat or not lon then
+  -- Actually, just allow to have this runninig once anyway -- e. g. on a relocated node.
+  -- local lat = uci:get_first("gluon-node-info", 'location', "latitude")
+  -- local lon = uci:get_first("gluon-node-info", 'location', "longitude")
+  -- if not lat or not lon then
     os.execute('sh "/lib/gluon/ffgt-geolocate/senddata.sh"')
     os.execute('sleep 2')
-  end
+  -- end
   luci.http.redirect(luci.dispatcher.build_url("gluon-config-mode/wizard-pre"))
 end
 
