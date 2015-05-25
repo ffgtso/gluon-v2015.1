@@ -97,11 +97,12 @@ function geolocate()
 end
 
 function action_reboot()
+  local util = require "luci.util"
   local uci = luci.model.uci.cursor()
   local sysconfig = require 'gluon.sysconfig'
   local lat = uci:get_first("gluon-node-info", "location", "latitude")
   local lon = uci:get_first("gluon-node-info", "location", "longitude")
-  local pubkey = uci:get_first('fastd', 'mesh_vpn', 'secret')
+  local pubkey = util.exec("/etc/init.d/fastd show_key " .. "mesh_vpn")
 
   if lat and lon then
      location = lat .. "%20" .. lon
