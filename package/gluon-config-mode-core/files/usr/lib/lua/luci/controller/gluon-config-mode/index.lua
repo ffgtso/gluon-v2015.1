@@ -91,7 +91,7 @@ function geolocate()
   -- local lat = uci:get_first("gluon-node-info", 'location', "latitude")
   -- local lon = uci:get_first("gluon-node-info", 'location', "longitude")
   -- if not lat or not lon then
-    os.execute('sh "/lib/gluon/ffgt-geolocate/senddata.sh"')
+    os.execute('/lib/gluon/ffgt-geolocate/senddata.sh force')
     os.execute('sleep 2')
   -- end
   luci.http.redirect(luci.dispatcher.build_url("gluon-config-mode/wizard-pre"))
