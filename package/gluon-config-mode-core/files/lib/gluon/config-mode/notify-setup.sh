@@ -18,7 +18,7 @@ if [ ! -e /tmp/run/setup-data-sent ]; then
   if [ $USEIPV4 -eq 1 ]; then
    IPVXPREFIX="ipv4."
   else
-   IPVXPREFIX=""
+   IPVXPREFIX="ipv6."
   fi
 
   mac=`/sbin/ifconfig eth0 | /usr/bin/awk '/HWaddr/ {print $NF;}'`
