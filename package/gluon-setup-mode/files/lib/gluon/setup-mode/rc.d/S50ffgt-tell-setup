@@ -2,11 +2,4 @@
 
 START=14
 
-boot() {
-	local enabled="$(uci -q get 'gluon-setup-mode.@setup_mode[0].enabled')"
-	local configured="$(uci -q get 'gluon-setup-mode.@setup_mode[0].configured')"
-
-	if [ "$enabled" = 1 -o "$configured" != 1 ]; then
-		/lib/gluon/config-mode/notify-setup.sh
-	fi
-}
+/lib/gluon/config-mode/notify-setup.sh
