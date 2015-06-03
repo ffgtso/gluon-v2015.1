@@ -3,6 +3,7 @@
 local sysconfig = require 'gluon.sysconfig'
 local gluon_util = require 'gluon.util'
 local platform = require 'gluon.platform'
+local platform_info = require 'platform_info'
 
 local uci = require('luci.model.uci').cursor()
 
@@ -12,12 +13,20 @@ if not (sysconfig.lan_ifname or sysconfig.wan_ifname) then
     return (gluon_util.exec('ip', 'link', 'show', 'dev', (name:gsub('%..*$', ''))) == 0)
   end
 
-
   local lan_ifname = uci:get('network', 'lan', 'ifname')
   local wan_ifname = uci:get('network', 'wan', 'ifname')
 
   if platform.match('ar71xx', 'generic', {'cpe510', 'nanostation-m', 'nanostation-m-xw', 'unifi-outdoor-plus'}) then
     lan_ifname, wan_ifname = wan_ifname, lan_ifname
+  end
+
+  -- Hack for x86.kvm_guest; FIXME: this belongs into OpenWRT (support ethX, X>0).
+  if platform_info:get_target() == "x86" and platform_info:get_subtarget() == "kvm_guest" then
+    if not wan_ifname then
+      if iface_exists('eth1') then
+        wan_ifname='eth1'
+      end
+    end
   end
 
   if wan_ifname and iface_exists(wan_ifname) then
