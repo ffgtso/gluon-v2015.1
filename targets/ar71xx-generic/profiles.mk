@@ -12,9 +12,7 @@ $(eval $(call GluonModel,CPE510,cpe210-220-510-520,tp-link-cpe520-v1.0))
 # TL-WA701N/ND v1, v2
 $(eval $(call GluonProfile,TLWA701))
 $(eval $(call GluonModel,TLWA701,tl-wa701n-v1,tp-link-tl-wa701n-nd-v1))
-ifeq ($(BROKEN),1)
-$(eval $(call GluonModel,TLWA701,tl-wa701nd-v2,tp-link-tl-wa701n-nd-v2)) # BROKEN: untested
-endif
+$(eval $(call GluonModel,TLWA701,tl-wa701nd-v2,tp-link-tl-wa701n-nd-v2))
 
 # TL-WR703N v1
 $(eval $(call GluonProfile,TLWR703))
@@ -24,25 +22,28 @@ $(eval $(call GluonModel,TLWR703,tl-wr703n-v1,tp-link-tl-wr703n-v1))
 $(eval $(call GluonProfile,TLWR710))
 $(eval $(call GluonModel,TLWR710,tl-wr710n-v1,tp-link-tl-wr710n-v1))
 
-# TL-WR740N v1, v3, v4
+# TL-WR740N v1, v3, v4, v5
 $(eval $(call GluonProfile,TLWR740))
 $(eval $(call GluonModel,TLWR740,tl-wr740n-v1,tp-link-tl-wr740n-nd-v1))
 $(eval $(call GluonModel,TLWR740,tl-wr740n-v3,tp-link-tl-wr740n-nd-v3))
 $(eval $(call GluonModel,TLWR740,tl-wr740n-v4,tp-link-tl-wr740n-nd-v4))
+$(eval $(call GluonModel,TLWR740,tl-wr740n-v5,tp-link-tl-wr740n-nd-v5))
 
-# TL-WR741N/ND v1, v2, v4
+# TL-WR741N/ND v1, v2, v4, v5
 $(eval $(call GluonProfile,TLWR741))
 $(eval $(call GluonModel,TLWR741,tl-wr741nd-v1,tp-link-tl-wr741n-nd-v1))
 $(eval $(call GluonModel,TLWR741,tl-wr741nd-v2,tp-link-tl-wr741n-nd-v2))
 $(eval $(call GluonModel,TLWR741,tl-wr741nd-v4,tp-link-tl-wr741n-nd-v4))
+$(eval $(call GluonModel,TLWR741,tl-wr741nd-v5,tp-link-tl-wr741n-nd-v5))
 
 # TL-WR743N/ND v1, v1.1, v2
 $(eval $(call GluonProfile,TLWR743))
 $(eval $(call GluonModel,TLWR743,tl-wr743nd-v1,tp-link-tl-wr743n-nd-v1))
 $(eval $(call GluonModel,TLWR743,tl-wr743nd-v2,tp-link-tl-wr743n-nd-v2))
 
-# TL-WR801N/ND v2
+# TL-WR801N/ND v1, v2
 $(eval $(call GluonProfile,TLWA801))
+$(eval $(call GluonModel,TLWA801,tl-wa801nd-v1,tp-link-tl-wa801n-nd-v1))
 $(eval $(call GluonModel,TLWA801,tl-wa801nd-v2,tp-link-tl-wa801n-nd-v2))
 
 # TL-WR841N/ND v3, v5, v7, v8, v9
@@ -86,9 +87,7 @@ $(eval $(call GluonModel,TLWA750,tl-wa750re-v1,tp-link-tl-wa750re-v1))
 # TL-WA830RE v1, v2
 $(eval $(call GluonProfile,TLWA830))
 $(eval $(call GluonModel,TLWA830,tl-wa830re-v1,tp-link-tl-wa830re-v1))
-ifeq ($(BROKEN),1)
 $(eval $(call GluonModel,TLWA830,tl-wa830re-v2,tp-link-tl-wa830re-v2))
-endif
 
 # TL-WA850RE v1
 $(eval $(call GluonProfile,TLWA850))
@@ -136,6 +135,10 @@ $(eval $(call GluonModel,ARCHERC7,archer-c7-v2,tp-link-archer-c7-v2)) # BROKEN: 
 ## Ubiquiti (everything)
 $(eval $(call GluonProfile,UBNT))
 $(eval $(call GluonModel,UBNT,ubnt-bullet-m,ubiquiti-bullet-m))
+$(eval $(call GluonModel,UBNT,ubnt-bullet-m,ubiquiti-loco-m))
+$(eval $(call GluonModel,UBNT,ubnt-bullet-m,ubiquiti-picostation-m))
+$(eval $(call GluonModel,UBNT,ubnt-bullet-m,ubiquiti-rocket-m))
+
 $(eval $(call GluonModel,UBNT,ubnt-loco-m-xw,ubiquiti-loco-m-xw))
 $(eval $(call GluonModel,UBNT,ubnt-nano-m,ubiquiti-nanostation-m))
 $(eval $(call GluonModel,UBNT,ubnt-nano-m-xw,ubiquiti-nanostation-m-xw))
