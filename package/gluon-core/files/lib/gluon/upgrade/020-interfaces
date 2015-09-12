@@ -20,14 +20,15 @@ if not (sysconfig.lan_ifname or sysconfig.wan_ifname) then
     lan_ifname, wan_ifname = wan_ifname, lan_ifname
   end
 
-  -- Hack for x86.kvm_guest; FIXME: this belongs into OpenWRT (support ethX, X>0).
-  if platform_info:get_target() == "x86" and platform_info:get_subtarget() == "kvm_guest" then
-    if not wan_ifname then
-      if iface_exists('eth1') then
-        wan_ifname='eth1'
-      end
-    end
-  end
+-- Fixed in 69c5329bc626250766ea45d251611ab9a93cbb12
+--  -- Hack for x86.kvm_guest; FIXED: this belongs into OpenWRT (support ethX, X>0).
+--  if platform_info:get_target() == "x86" and platform_info:get_subtarget() == "kvm_guest" then
+--    if not wan_ifname then
+--      if iface_exists('eth1') then
+--        wan_ifname='eth1'
+--      end
+--    end
+--  end
 
   if wan_ifname and iface_exists(wan_ifname) then
     sysconfig.wan_ifname = wan_ifname
