@@ -1,7 +1,7 @@
 local locode = uci:get_first('gluon-node-info', 'location', 'locode', '')
 
 if locode == '' then
-  locode = "ERR"
+  locode = "n/a"
 end
 
 return locode
