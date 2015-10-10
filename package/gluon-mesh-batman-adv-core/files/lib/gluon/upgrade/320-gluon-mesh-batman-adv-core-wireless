@@ -15,6 +15,7 @@ local function configure_radio(radio, index, config)
 
   local client = 'client_' .. radio
   local mesh = 'mesh_' .. radio
+  local legacyclient = 'legacy_' .. radio
 
   local disable_state_client = false
   local disable_state_mesh = false
@@ -37,6 +38,7 @@ local function configure_radio(radio, index, config)
   if radio_suffix then
     client_ifname = 'client' .. radio_suffix
     mesh_ifname = 'mesh' .. radio_suffix
+    legacy_ifname = 'legacy' .. radio_suffix
   end
 
   uci:delete('wireless', client)
@@ -51,6 +53,21 @@ local function configure_radio(radio, index, config)
 		disabled = disable_state_client and 1 or 0,
 	      }
   )
+
+  if config.oldssid then
+    uci:delete('wireless', legacy)
+    uci:section('wireless', 'wifi-iface', legacy,
+	    {
+		    device = radio,
+		    network = 'client',
+		    mode = 'ap',
+		    ssid = config.oldssid,
+--		    macaddr = util.generate_mac(2, index + 5),
+--		    ifname = legacy_ifname,
+		    disabled = disable_state_client and 1 or 0,
+	    }
+  )
+  end
 
   uci:delete('network', mesh)
   uci:delete('network', mesh .. '_vlan')
