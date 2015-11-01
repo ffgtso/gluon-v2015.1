@@ -64,4 +64,3 @@ index d541939..be53a5a 100644
 + #define REV_ID_MAJOR_QCA9556		0x0130
 + #define REV_ID_MAJOR_QCA9558		0x1130
 +
-+ 
