@@ -1,0 +1,67 @@
+From: Kai 'wusel' Siering <wusel+src@uu.org>
+Date: Wed, 28 Oct 2015 03:31:25 +0100
+Subject: ar71xx: fix ath79_soc_rev value for QCA9531 ver. 2
+
+(Based on https://raw.githubusercontent.com/freifunk-gluon/gluon/master/patches/openwrt/0031-ar71xx-fix-ath79_soc_rev-value-for-QCA9531-ver.-2.patch)
+
+ath9k expects to get revision id 2 for the QCA9531 ver. 2 rev. 0. This
+fixes the very low TX power on some devices like the TP-LINK
+TL-WR841ND v10.
+
+As ath79_soc_rev is only used to get the revision number to ath9k on the
+QCA9533, just set it to the expected value on the ver. 2.
+
+diff --git a/target/linux/ar72xx/patches-3.10/707-MIPS-ath79-add-support-for-QCA953xv2-SoC.patch b/target/linux/ar71xx/patches-3.10/707-MIPS-ath79-add-support-for-QCA953xv2-SoC.patch
+index d541939..be53a5a 100644
+--- a/target/linux/ar71xx/patches-3.10/707-MIPS-ath79-add-support-for-QCA953x-SoCv2.patch
++++ b/target/linux/ar71xx/patches-3.10/707-MIPS-ath79-add-support-for-QCA953x-SoCv2.patch
++--- a/arch/mips/ath79/setup.c	2015-10-28 01:48:28.439374769 +0100
+++++ b/arch/mips/ath79/setup.c	2015-10-28 03:08:00.420605711 +0100
++@@ -60,6 +60,7 @@ static void __init ath79_detect_sys_type
++ 	u32 major;
++ 	u32 minor;
++ 	u32 rev = 0;
+++	u32 ver = 1;
++ 
++	id = ath79_reset_rr(AR71XX_RESET_REG_REV_ID);
++ 	major = id & REV_ID_MAJOR_MASK;
++@@ -152,6 +153,11 @@ static void __init ath79_detect_sys_type
++ 		rev = id & AR934X_REV_ID_REVISION_MASK;
++ 		break;
++ 
+++	case REV_ID_MAJOR_QCA9533_V2:
+++		ver = 2;
+++		ath79_soc_rev = 2;
+++		/* drop through */
+++
++ 	case REV_ID_MAJOR_QCA9533:
++ 		ath79_soc = ATH79_SOC_QCA9533;
++ 		chip = "9533";
++@@ -174,11 +180,12 @@ static void __init ath79_detect_sys_type
++ 		panic("ath79: unknown SoC, id:0x%08x", id);
++ 	}
++ 
++-	ath79_soc_rev = rev;
+++	if (ver == 1)
+++		ath79_soc_rev = rev;
++ 
++ 	if (soc_is_qca953x() || soc_is_qca955x())
++-		sprintf(ath79_sys_type, "Qualcomm Atheros QCA%s rev %u",
++-			chip, rev);
+++		sprintf(ath79_sys_type, "Qualcomm Atheros QCA%s ver %u rev %u",
+++			chip, ver, rev);
++ 	else
++ 		sprintf(ath79_sys_type, "Atheros AR%s rev %u", chip, rev);
++ 	pr_info("SoC: %s\n", ath79_sys_type);
++--- a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h	2015-10-28 01:48:28.2513+72891 +0100
+++++ b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h	2015-10-28 03:16:44.8540+76612 +0100
++@@ -613,6 +613,8 @@
++ #define REV_ID_MAJOR_AR9342		0x1120
++ #define REV_ID_MAJOR_AR9344		0x2120
++ #define REV_ID_MAJOR_QCA9533		0x0140
+++#define REV_ID_MAJOR_QCA9533_V1_1	0x0141
+++#define REV_ID_MAJOR_QCA9533_V2		0x0160
++ #define REV_ID_MAJOR_QCA9556		0x0130
++ #define REV_ID_MAJOR_QCA9558		0x1130
++
++ 
