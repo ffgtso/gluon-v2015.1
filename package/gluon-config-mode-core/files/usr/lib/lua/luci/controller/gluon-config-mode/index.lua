@@ -99,7 +99,6 @@ end
 
 function action_reboot()
   local util = require "luci.util"
-  local nixioutil = require "nixio.util"
   local uci = luci.model.uci.cursor()
   local sysconfig = require 'gluon.sysconfig'
   local lat = uci:get_first("gluon-node-info", "location", "latitude")
@@ -117,10 +116,11 @@ function action_reboot()
   uci:commit("gluon-setup-mode")
 
   if nixio.fork() ~= 0 then
-    -- local fs = require "luci.fs"
+    local fs = require "nixio.fs"
+    local util = require "nixio.util"
 
     local parts_dir = "/lib/gluon/config-mode/reboot/"
-    local files = nixioutil.consume(nixio.dir(parts_dir))
+    local files = util.consume(fs.dir(parts_dir))
 
     table.sort(files)
 
