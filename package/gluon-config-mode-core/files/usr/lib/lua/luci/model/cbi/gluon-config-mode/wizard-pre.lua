@@ -1,13 +1,17 @@
 local geoloc_dir = "/lib/gluon/config-mode/geoloc/"
 local i18n = luci.i18n
 local uci = luci.model.uci.cursor()
-local fs = require "luci.fs"
+local fs = require "nixio.fs"
+local util = require "nixio.util"
 local f, s
 
 local geoloc = {}
-local files = fs.dir(geoloc_dir)
+local files = {}
 
-table.sort(files)
+if fs.access(geoloc_dir) then
+  files = util.consume(fs.dir(geoloc_dir))
+  table.sort(files)
+end
 
 for _, entry in ipairs(files) do
   if entry:sub(1, 1) ~= '.' then
