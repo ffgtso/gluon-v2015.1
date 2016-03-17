@@ -5,6 +5,9 @@ Added hardware support
 ~~~~~~~~~~~~~~~~~~~~~~
 ar71xx-generic
 ^^^^^^^^^^^^^^
+* D-Link
+
+  - DIR-505 (A1)
 
 * TP-Link
 

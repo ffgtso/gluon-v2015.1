@@ -4,6 +4,8 @@ Welcome to Gluon
 Gluon is a modular framework for creating OpenWrt-based firmwares for wireless mesh nodes.
 Several Freifunk communities in Germany use Gluon as the foundation of their Freifunk firmwares.
 
+This version is patched by Freifunk Gütersloh ...
+
 
 User Documentation
 ------------------
@@ -74,6 +76,7 @@ ar71xx-generic
 
 * D-Link
 
+  - DIR-505 (A1)
   - DIR-825 (B1)
   - DIR-615 (C1)
 
