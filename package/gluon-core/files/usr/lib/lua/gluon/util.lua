@@ -65,14 +65,16 @@ function generate_mac(f, i)
   local wan_mac_fixed = uci:get('gluon-node-info','system','wan_mac_fixed') and 1 or 0
   local hostname = uci:get_first("system", "system", "hostname")
 
-  if wlan_max_fixed then
-    return(generate_mac_2014_3(f, i))
+  if (f==1 && i==0) then
+    if wlan_max_fixed then
+      return(generate_mac_2014_3(f, i))
+    end
+    -- Hardcoded for now, FIXME
+    if string.match(hostname, 'HolidayInnExpress') >= 1 then
+      return(generate_mac_2014_3(f, i))
+    end
   end
-
-  -- Hardcoded for now, FIXME
-  if string.match(hostname, 'HolidayInnExpress') >= 1 then
-    return(generate_mac_2014_3(f, i))
-  end
+  -- fall through
 
   return(generate_mac_2014_4(f, i))
 end
