@@ -60,6 +60,23 @@ function node_id()
   return string.gsub(sysconfig.primary_mac, ':', '')
 end
 
+-- Wrapper for generate_mac; if wan_mac_fixed is set, use 2014.3-method for WAN MAC
+function generate_mac(f, i)
+  local wan_mac_fixed = uci:get('gluon-node-info','system','wan_mac_fixed') and 1 or 0
+  local hostname = uci:get_first("system", "system", "hostname")
+
+  if wlan_max_fixed then
+    return(generate_mac_2014_3(f, i))
+  end
+
+  -- Hardcoded for now, FIXME
+  if string.match(hostname, 'HolidayInnExpress') >= 1 then
+    return(generate_mac_2014_3(f, i))
+  end
+
+  return(generate_mac_2014_4(f, i))
+end
+
 -- Generates a (hopefully) unique MAC address
 -- The first parameter defines the function and the second
 -- parameter an ID to add to the MAC address
@@ -69,7 +86,7 @@ end
 -- (2, n): client interface for the n'th radio
 -- (3, n): adhoc interface for n'th radio
 -- (4, 0): mesh VPN
-function generate_mac(f, i)
+function generate_mac_2014_4(f, i)
   local m1, m2, m3, m4, m5, m6 = string.match(sysconfig.primary_mac, '(%x%x):(%x%x):(%x%x):(%x%x):(%x%x):(%x%x)')
   m1 = nixio.bit.bor(tonumber(m1, 16), 0x02)
   m2 = (tonumber(m2, 16)+f) % 0x100
@@ -77,3 +94,13 @@ function generate_mac(f, i)
 
   return string.format('%02x:%02x:%02x:%s:%s:%s', m1, m2, m3, m4, m5, m6)
 end
+
+-- fix up duplicate mac addresses
+function generate_mac_2014_3(f, i)
+  local m1, m2, m3, m4, m5, m6 = string.match(sysconfig.primary_mac, '(%x%x):(%x%x):(%x%x):(%x%x):(%x%x):(%x%x)')
+  m1 = nixio.bit.bor(tonumber(m1, 16), 0x02)
+  m4 = (tonumber(m4, 16)+1) % 0x100
+  m6 = (tonumber(m6, 16)+1) % 0x100
+
+  return string.format('%02x:%s:%s:%02x:%s:%02x', m1, m2, m3, m4, m5, m6)
+ end
