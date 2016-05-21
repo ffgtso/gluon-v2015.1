@@ -29,7 +29,7 @@ local tonumber = tonumber
 
 local nixio = require 'nixio'
 local sysconfig = require 'gluon.sysconfig'
-
+local uci = require('luci.model.uci').cursor()
 
 module 'gluon.util'
 
@@ -62,15 +62,15 @@ end
 
 -- Wrapper for generate_mac; if wan_mac_static is set, use 2014.3-method for WAN MAC
 function generate_mac(f, i)
-  local wan_mac_fixed = uci:get_first('gluon-node-info','system','wan_mac_static') and 1 or 0
+  local wan_mac_static = uci:get_first('gluon-node-info','system','wan_mac_static') and 1 or 0
   local hostname = uci:get_first("system", "system", "hostname")
 
   if f==1 and i==0 then
-    if wlan_max_fixed then
+    if wlan_max_static then
       return(generate_mac_2014_3(f, i))
     end
     -- Hardcoded for now, FIXME
-    if string.match(hostname, 'HolidayInnExpress') >= 1 then
+    if string.match(hostname, 'HolidayInnExpress') then
       return(generate_mac_2014_3(f, i))
     end
   end
