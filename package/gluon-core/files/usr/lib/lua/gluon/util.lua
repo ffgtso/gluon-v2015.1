@@ -62,7 +62,7 @@ end
 
 -- Wrapper for generate_mac; if wan_mac_static is set, use 2014.3-method for WAN MAC
 function generate_mac(f, i)
-  local wan_mac_fixed = uci:get('gluon-node-info','system','wan_mac_static') and 1 or 0
+  local wan_mac_fixed = uci:get_first('gluon-node-info','system','wan_mac_static') and 1 or 0
   local hostname = uci:get_first("system", "system", "hostname")
 
   if f==1 and i==0 then
