@@ -69,8 +69,13 @@ function generate_mac(f, i)
     if wan_mac_static == '1' then
       return(generate_mac_2014_3(f, i))
     end
-    -- Hardcoded for now, FIXME
+    -- Hardcoded for now, FIXME. Doesn't even work :(
     if string.match(hostname, 'HolidayInnExpress') then
+      local sname = uci:get_first("gluon-node-info", "system")
+      uci:set("gluon-node-info", sname, "wan_mac_static", "1")
+      uci:save("gluon-node-info")
+      uci:commit("gluon-node-info")
+
       return(generate_mac_2014_3(f, i))
     end
   end
