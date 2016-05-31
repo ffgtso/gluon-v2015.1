@@ -93,6 +93,7 @@ end
 -- (2, n): client interface for the n'th radio
 -- (3, n): adhoc interface for n'th radio
 -- (4, 0): mesh VPN
+-- (5, n): possible additional client interface for the n'th radio
 function generate_mac_2014_4(f, i)
   local m1, m2, m3, m4, m5, m6 = string.match(sysconfig.primary_mac, '(%x%x):(%x%x):(%x%x):(%x%x):(%x%x):(%x%x)')
   m1 = nixio.bit.bor(tonumber(m1, 16), 0x02)
