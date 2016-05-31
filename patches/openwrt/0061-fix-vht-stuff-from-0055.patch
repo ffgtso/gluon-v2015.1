@@ -1,0 +1,23 @@
+From: Kai 'wusel' Siering <wusel+src@uu.org>
+Date: Tue, 31 May 2016 23:01:21 +0200
+Subject: fix vht stuff
+
+diff --git a/package/network/services/hostapd/files/netifd.sh b/package/network/services/hostapd/files/netifd.sh
+index fc39f66..755a5cd 100644
+--- a/package/network/services/hostapd/files/netifd.sh
++++ b/package/network/services/hostapd/files/netifd.sh
+@@ -594,14 +594,11 @@ wpa_supplicant_add_network() {
+ 			NOHT)
+ 				append network_data "disable_ht=1" "$N$T"
+ 				append network_data "disable_ht40=1" "$N$T"
+-				append network_data "disable_vht=1" "$N$T"
+ 			;;
+ 			HT20)
+ 				append network_data "disable_ht40=1" "$N$T"
+-				append network_data "disable_vht=1" "$N$T"
+ 			;;
+ 			HT40*)
+-				append network_data "disable_vht=1" "$N$T"
+ 			;;
+ 		esac
+ 	}
