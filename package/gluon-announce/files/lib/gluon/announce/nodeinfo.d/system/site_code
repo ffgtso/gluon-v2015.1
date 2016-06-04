@@ -1,3 +1,7 @@
 local site = require 'gluon.site_config'
 
-return site.site_code
+if site.site_selectcode then
+  return site.site_selectcode
+else
+  return site.site_code
+end
