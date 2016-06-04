@@ -51,3 +51,6 @@ msgstr "Statische DNS-Server"
 
 msgid "WAN connection"
 msgstr "WAN-Verbindung"
+
+msgid "Bridge WAN and LAN"
+msgstr "LAN-Ports als weitere WAN-Ports benutzen"
