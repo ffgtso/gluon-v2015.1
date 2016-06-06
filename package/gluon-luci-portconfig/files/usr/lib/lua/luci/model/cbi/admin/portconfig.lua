@@ -146,7 +146,7 @@ end
 
 if platform.match('ar71xx', 'generic', {'tl-wr841n-v10', 'tl-wr841n-v9', 'tl-wr1043nd-v2', 'tl-wr1043nd-v3'}) then
   if sysconfig.lan_ifname then
-    o = s:option(Flag, "lan_wan_bridge", translate("Bridge WAN and LAN))
+    o = s:option(Flag, "lan_wan_bridge", translate("Bridge WAN and LAN"))
     o.default = uci:get_bool("network", "wan", "bridge_lan") and o.enabled or o.disabled
     o.rmempty = false
   end
@@ -194,6 +194,7 @@ function f.handle(self, state, data)
           uci:set("network", "client", "ifname", batname .. " " .. sysconfig.lan_ifname)
           uci:set("network", "wan", "ifname", sysconfig.wan_ifname)
         end
+      end
     end
 
     for _, radio in ipairs(radios) do
