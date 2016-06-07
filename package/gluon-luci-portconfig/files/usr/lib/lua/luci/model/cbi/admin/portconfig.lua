@@ -206,14 +206,20 @@ function f.handle(self, state, data)
 
     if data.uplink ~= 'wired' then
       uci:set('wireless', 'uplink_' .. data.uplink, "disabled", "0")
-      uci:delete('network', 'wan', "type")
-      uci:delete('network', 'wan', "ifname")
+      if data.lan_wan_bridge ~= '1' then
+        uci:delete('network', 'wan', "type")
+        uci:delete('network', 'wan', "ifname")
+      end
       uci:set('network', 'wan6', "ifname", uci:get('wireless', 'uplink_' .. data.uplink, "ifname"))
       uci:set('network', 'mesh_wan', "ifname", sysconfig.wan_ifname)
     end
     if data.uplink == 'wired' or data.wds == '1' then
       uci:set('network', 'wan', "type", "bridge")
-      uci:set('network', 'wan', "ifname", sysconfig.wan_ifname)
+      if data.lan_wan_bridge == '1' then
+        uci:set("network", "wan", "ifname", sysconfig.wan_ifname .. " " .. sysconfig.lan_ifname)
+      else
+        uci:set('network', 'wan', "ifname", sysconfig.wan_ifname)
+      end
       uci:set('network', 'wan6', "ifname", "br-wan")
       uci:set('network', 'mesh_wan', "ifname", "br-wan")
     end
