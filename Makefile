@@ -286,8 +286,8 @@ prepare-image: FORCE
 	+$(SUBMAKE) -C $(TOPDIR)/target/linux/$(BOARD)/image -f $(GLUONDIR)/include/Makefile.image prepare KDIR="$(BOARD_KDIR)"
 
 prepare: FORCE
-	@$(STAGING_DIR_HOST)/bin/lua $(GLUONDIR)/package/gluon-core/files/usr/lib/lua/gluon/site_config.lua \
-		|| (echo 'Your site configuration did not pass validation.'; false)
+	#@$(STAGING_DIR_HOST)/bin/lua $(GLUONDIR)/package/gluon-core/files/usr/lib/lua/gluon/site_config.lua \
+	#	|| (echo 'Your site configuration did not pass validation.'; false)
 
 	mkdir -p $(GLUON_IMAGEDIR) $(BOARD_BUILDDIR)
 	echo 'src packages file:../openwrt/bin/$(BOARD)/packages' > $(BOARD_BUILDDIR)/opkg.conf
