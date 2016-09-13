@@ -49,7 +49,12 @@ local s = f:section(SimpleSection, nil, translate(
                   .. "a good reason, so other nodes can mesh with yours.<br /><br />"
                   .. "It is also possible to configure the WLAN adapters transmission power "
                   .. "here. Please note that the transmission power values include the antenna gain "
-                  .. "where available, but there are many devices for which the gain is unavailable or inaccurate."
+                  .. "where available, but there are many devices "
+                  .. "for which the gain is unavailable or inaccurate.<br /><br />"
+                  .. "&quot;Nighttime peace&quot;, if enabled, will <em>dectivate</em> the client "
+                  .. "network between 22:00 and 06:00 local time, thus disconnecting all users! "
+                  .. "Please use this with caution, it is intented for places where people tend "
+                  .. "to gather at night (especially in summer) and disturb the neighbour's sleep."
 ))
 
 local radios = {}
@@ -78,6 +83,12 @@ for _, radio in ipairs(radios) do
     --box for the client network
     o = p:option(Flag, radio .. '_client_enabled', translate("Enable client network"))
     o.default = uci:get_bool('wireless', 'client_' .. radio, "disabled") and o.disabled or o.enabled
+    o.rmempty = false
+
+    --box for setting the nighttime peace option per client network
+    o = p:option(Flag, radio .. '_client_nachtruhe_enabled', translate("Enable nighttime peace (22:00-06:00)"))
+    o.default = uci:get_bool('wireless', 'client_' .. radio, "nachtruhe") and o.disabled or o.enabled
+    o:depends(radio .. '_client_enabled', '1')
     o.rmempty = false
 
     --box for the mesh network
@@ -119,12 +130,22 @@ function f.handle(self, state, data)
   if state == FORM_VALID then
 
     for _, radio in ipairs(radios) do
-
+      local nachtruheenabled = 0
       local clientdisabled = 0
       if data[radio .. '_client_enabled'] == '0' then
         clientdisabled = 1
+      else
+          if data[radio .. '_client_nachtruhe_enabled'] == '1' then
+            nachtruheenabled=1
+          fi
       end
+      -- We set a new value, wireless.client_radioX.cfgdisabled to save the desired
+      -- state; wireless.client_radioX.disabled will be modified according to the
+      -- setting of wireless.client_radioX.nachtruhe every hour (but changes will
+      -- not be commited (saved to flash), so no need for boot-time changes).
       uci:set('wireless', 'client_' .. radio, "disabled", clientdisabled)
+      uci:set('wireless', 'client_' .. radio, "cfgdisabled", clientdisabled)
+      uci:set('wireless', 'client_' .. radio, "nachtruhe", nachtruheenabled)
 
       local meshdisabled = 0
       if data[radio .. '_mesh_enabled'] == '0' then
