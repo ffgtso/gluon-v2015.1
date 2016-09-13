@@ -137,7 +137,7 @@ function f.handle(self, state, data)
       else
           if data[radio .. '_client_nachtruhe_enabled'] == '1' then
             nachtruheenabled=1
-          fi
+          end
       end
       -- We set a new value, wireless.client_radioX.cfgdisabled to save the desired
       -- state; wireless.client_radioX.disabled will be modified according to the
