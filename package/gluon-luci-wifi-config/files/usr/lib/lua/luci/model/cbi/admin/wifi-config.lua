@@ -87,7 +87,7 @@ for _, radio in ipairs(radios) do
 
     --box for setting the nighttime peace option per client network
     o = p:option(Flag, radio .. '_client_nachtruhe_enabled', translate("Enable nighttime peace (22:00-06:00)"))
-    o.default = uci:get_bool('wireless', 'client_' .. radio, "nachtruhe") and o.disabled or o.enabled
+    o.default = uci:get_bool('wireless', 'client_' .. radio, "nachtruhe") and o.enabled or o.disabled
     o:depends(radio .. '_client_enabled', '1')
     o.rmempty = false
 
