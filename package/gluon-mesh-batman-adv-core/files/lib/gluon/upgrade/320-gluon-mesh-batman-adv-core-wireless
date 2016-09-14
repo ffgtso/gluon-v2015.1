@@ -17,10 +17,14 @@ local function configure_radio(radio, index, config)
   local legacy_client = 'legacy_' .. radio
   local mesh = 'mesh_' .. radio
   local disable_state_client = false
+  local nachtruhe_state_client = false
   local disable_state_mesh = false
 
   if uci:get('wireless', client) then
     disable_state_client = uci:get_bool('wireless', client, "disabled")
+    if uci:get_bool('wireless', client, "nachtruhe") then
+      nachtruhe_state_client = uci:get_bool('wireless', client, "nachtruhe")
+    end
   elseif config.client_disabled then
     disable_state_client = true
   end
@@ -51,6 +55,8 @@ local function configure_radio(radio, index, config)
 		macaddr = util.generate_mac(2, index),
 		ifname = client_ifname,
 		disabled = disable_state_client and 1 or 0,
+		cfgdisabled = disable_state_client and 1 or 0,
+	    nachtruhe = nachtruhe_state_client and 1 or 0,
 	      }
   )
 
