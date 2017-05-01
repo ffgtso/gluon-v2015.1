@@ -64,8 +64,12 @@ end
 function generate_mac(f, i)
   local wan_mac_static = uci:get_first('gluon-node-info','system','wan_mac_static') and 1 or 0
   local hostname = uci:get_first("system", "system", "hostname")
+  local system = uci:get_first('system', 'system')
+  local staticwanmac = uci:get('system', system, 'staticwanmac')
 
   if f==1 and i==0 then
+    if staticwanmac then
+      return staticwanmac
     if wan_mac_static == '1' then
       return(generate_mac_2014_3(f, i))
     end
