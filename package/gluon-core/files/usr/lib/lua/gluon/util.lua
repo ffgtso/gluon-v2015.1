@@ -70,6 +70,7 @@ function generate_mac(f, i)
   if f==1 and i==0 then
     if staticwanmac then
       return staticwanmac
+    end
     if wan_mac_static == '1' then
       return(generate_mac_2014_3(f, i))
     end
